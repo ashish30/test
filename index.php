@@ -8,7 +8,6 @@
 <body>
     <h1>Welcome to 2022</h1>
     <?php
-        // Get user agent informations
         
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
         echo "<p>Your User Agent: $user_agent</p>";
