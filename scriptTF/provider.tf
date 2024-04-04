@@ -6,7 +6,7 @@ terraform {
     }
   }
 }
-#provider
+
 provider "google" {
   project     = "mygcp-ap"
   region      = "us-central1"

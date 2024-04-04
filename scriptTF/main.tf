@@ -1,4 +1,3 @@
-
 resource "google_compute_network" "vpc_network" {
   name                    = "my-vpc-network"
   auto_create_subnetworks = false
@@ -19,21 +18,31 @@ resource "google_compute_subnetwork" "subnet2" {
 }
 
 resource "google_compute_instance" "vm_instance" {
-  name         = "volvo-network"
+  name         = "my-vm"
   machine_type = "e2-micro"
   zone         = "us-central1-a"
-
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
     }
   }
-
   network_interface {
-    network    = google_compute_network.vpc_network.id
-    subnetwork = google_compute_subnetwork.subnet1.id
+    network    = google_compute_network.vpc_network.name
+    subnetwork = google_compute_subnetwork.subnet1.name
     access_config {
-         // Ephemeral IP
+      // Ephemeral IP
     }
   }
+}
+
+resource "google_compute_firewall" "allow_ssh" {
+  name    = "allow-ssh"
+  network = google_compute_network.vpc_network.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
 }
